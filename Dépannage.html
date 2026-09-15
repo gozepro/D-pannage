@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dépannage Cocody — Assistance informatique de quartier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0EA;
+    --paper-dim: #E3E6DD;
+    --ink: #22201C;
+    --ink-soft: #55534C;
+    --line: #C9CBC0;
+    --flame: #E4522A;
+    --pine: #2F6F62;
+    --card: #F7F8F4;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--paper-dim);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,h2,h3{
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .ticket{
+    max-width: 640px;
+    margin: 0 auto;
+    background: var(--paper);
+    min-height: 100vh;
+    box-shadow: 0 0 60px rgba(0,0,0,0.08);
+  }
+
+  /* Perforated tear edge, used between sections */
+  .tear{
+    height: 18px;
+    background:
+      radial-gradient(circle at 10px 0, transparent 9px, var(--paper) 9.5px) top/20px 18px repeat-x;
+    position: relative;
+  }
+  .tear::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    border-top: 1.5px dashed var(--line);
+  }
+
+  section{ padding: 40px 28px; }
+
+  /* HERO */
+  .hero{
+    padding: 48px 28px 36px;
+    position: relative;
+  }
+  .mark{
+    width: 44px; height: 44px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size: 15px;
+    margin-bottom: 22px;
+  }
+  .hero h1{
+    font-size: 34px;
+    line-height: 1.12;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    max-width: 12ch;
+  }
+  .hero .tagline{
+    margin-top: 14px;
+    color: var(--ink-soft);
+    font-size: 16px;
+    max-width: 36ch;
+  }
+  .hero .meta{
+    margin-top: 26px;
+    display:flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .hero .meta span{
+    padding-left: 14px;
+    border-left: 2px solid var(--flame);
+  }
+  .cta{
+    display:inline-block;
+    margin-top: 30px;
+    background: var(--flame);
+    color: #fff;
+    text-decoration:none;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px 24px;
+    border-radius: 3px;
+    transition: transform .15s ease, background .15s ease;
+  }
+  .cta:hover{ background:#c94318; }
+  .cta:focus-visible{ outline: 3px solid var(--pine); outline-offset: 2px; }
+
+  /* SERVICES — receipt line items */
+  .kicker{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+  }
+  .line-item{
+    display:flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .line-item:first-of-type{ border-top: 1px solid var(--line); }
+  .line-item .name{
+    font-size: 15.5px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .line-item .leader{
+    flex: 1;
+    border-bottom: 1.5px dotted var(--ink-soft);
+    height: 1px;
+    opacity: .5;
+    transform: translateY(-4px);
+  }
+  .line-item .tag{
+    font-size: 12px;
+    color: var(--pine);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .note{
+    margin-top: 18px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+
+  /* HOW IT WORKS */
+  .steps{ margin-top: 6px; }
+  .step{
+    display:flex;
+    gap: 16px;
+    padding: 16px 0;
+  }
+  .step + .step{ border-top: 1px solid var(--line); }
+  .step .num{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--flame);
+    flex-shrink: 0;
+    width: 22px;
+  }
+  .step h3{
+    font-size: 15.5px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .step p{
+    margin:0;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+
+  /* FORM */
+  .field{ margin-bottom: 18px; }
+  label{
+    display:block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    font-family:'Space Grotesk', sans-serif;
+    letter-spacing: 0.01em;
+  }
+  input, select, textarea{
+    width:100%;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    padding: 11px 12px;
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 3px;
+    color: var(--ink);
+  }
+  input:focus, select:focus, textarea:focus{
+    outline: none;
+    border-color: var(--pine);
+  }
+  textarea{ resize: vertical; min-height: 80px; }
+  .submit{
+    width: 100%;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .submit:hover{ background:#000; }
+  .price-note{
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-align:center;
+  }
+
+  /* FOOTER */
+  footer{
+    padding: 32px 28px 44px;
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer .zone{ font-size: 13px; color: var(--ink-soft); }
+  footer .whats{
+    font-size: 13px;
+    color: var(--pine);
+    text-decoration:none;
+    font-weight: 600;
+  }
+
+  @media (max-width: 420px){
+    .hero h1{ font-size: 28px; }
+    section{ padding: 32px 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="ticket">
+
+  <div class="hero">
+    <div class="mark">DF</div>
+    <h1>Dépannage Cocody</h1>
+    <p class="tagline">Assistance informatique à domicile, dans votre quartier — sans détour, sans bruit.</p>
+    <div class="meta">
+      <span>Cocody Faya &amp; alentours</span>
+      <span>Disponible tous les jours</span>
+    </div>
+    <a href="#contact" class="cta">Décrire ma panne</a>
+  </div>
+
+  <div class="tear"></div>
+
+  <section>
+    <div class="kicker">Ce que je prends en charge</div>
+    <div class="line-item"><span class="name">Maintenance & mises à jour</span><span class="leader"></span><span class="tag">PC</span></div>
+    <div class="line-item"><span class="name">Installation Windows / Linux</span><span class="leader"></span><span class="tag">Système</span></div>
+    <div class="line-item"><span class="name">Réseau & Wifi</span><span class="leader"></span><span class="tag">Réseau</span></div>
+    <div class="line-item"><span class="name">Imprimantes</span><span class="leader"></span><span class="tag">Bureautique</span></div>
+    <div class="line-item"><span class="name">Virus & sécurité</span><span class="leader"></span><span class="tag">Sécurité</span></div>
+    <div class="line-item"><span class="name">Achat de matériel</span><span class="leader"></span><span class="tag">Conseil</span></div>
+    <p class="note">Une panne que vous ne trouvez pas dans la liste ? Décrivez-la quand même, je vous dirai si je peux la prendre en charge.</p>
+  </section>
+
+  <div class="tear"></div>
+
+  <section>
+    <div class="kicker">Comment ça marche</div>
+    <div class="steps">
+      <div class="step">
+        <span class="num">1</span>
+        <div><h3>Vous scannez le code</h3><p>Sur l'affiche du quartier, ou vous arrivez directement ici.</p></div>
+      </div>
+      <div class="step">
+        <span class="num">2</span>
+        <div><h3>Vous décrivez la panne</h3><p>Formulaire ci-dessous — deux minutes suffisent.</p></div>
+      </div>
+      <div class="step">
+        <span class="num">3</span>
+        <div><h3>Je vous recontacte</h3><p>Par téléphone ou WhatsApp, pour convenir d'un passage.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tear"></div>
+
+  <section id="contact">
+    <div class="kicker">Votre demande</div>
+
+    <!--
+      Étape à faire avant de déployer :
+      1) Crée un compte gratuit sur https://formspree.io
+      2) Crée un nouveau formulaire, tu obtiens une URL du type
+         https://formspree.io/f/xxxxxxx
+      3) Remplace "VOTRE_ID_FORMSPREE" ci-dessous par cet identifiant.
+      Chaque soumission t'arrivera par email ET restera archivée
+      dans ton tableau de bord Formspree (plan gratuit : 50 envois/mois).
+    -->
+    <form action="https://formspree.io/f/moevajwn" method="POST">
+      <div class="field">
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" name="nom" required>
+      </div>
+      <div class="field">
+        <label for="tel">Téléphone (WhatsApp de préférence)</label>
+        <input type="tel" id="tel" name="telephone" required>
+      </div>
+      <div class="field">
+        <label for="quartier">Quartier / adresse</label>
+        <input type="text" id="quartier" name="quartier" required>
+      </div>
+      <div class="field">
+        <label for="type">Type de panne</label>
+        <select id="type" name="type_panne" required>
+          <option value="">Sélectionner</option>
+          <option>Maintenance / mise à jour</option>
+          <option>Installation Windows / Linux</option>
+          <option>Réseau / Wifi</option>
+          <option>Imprimante</option>
+          <option>Virus / sécurité</option>
+          <option>Achat de matériel</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="desc">Décrivez la panne</label>
+        <textarea id="desc" name="description" required></textarea>
+      </div>
+      <button type="submit" class="submit">Envoyer ma demande</button>
+      <p class="price-note">Le tarif est discuté ensemble, selon la panne.</p>
+    </form>
+  </section>
+
+  <div class="tear"></div>
+
+  <footer>
+    <div class="zone">Cocody Faya, Abidjan</div>
+    <a class="whats" href="https://wa.me/2250565418274" target="_blank" rel="noopener">Écrire sur WhatsApp →</a>
+  </footer>
+
+</div>
+</body>
+</html>
